@@ -2,7 +2,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { MoodType, DayEntry, UserSettings, UserGoal } from '../types';
 import { MOOD_CONFIG } from '../constants';
-import { getAffirmation } from '../geminiService';
+import { getAffirmation } from '../affirmations';
 
 interface MoodCheckInProps {
   onSave: (entry: DayEntry) => void;
@@ -28,11 +28,6 @@ const MoodCheckIn: React.FC<MoodCheckInProps> = ({ onSave, onCancel, targetDate,
   const [affirmation, setAffirmation] = useState<string | null>(null);
   const [activeGoals, setActiveGoals] = useState<Record<string, boolean>>({});
   
-  const [isAddingGoal, setIsAddingGoal] = useState(false);
-  const [newGoalLabel, setNewGoalLabel] = useState('');
-  const [newGoalIcon, setNewGoalIcon] = useState('✨');
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const moodList = Object.keys(MOOD_CONFIG) as MoodType[];
 
   const enabledGoals = useMemo(() => {
@@ -44,19 +39,6 @@ const MoodCheckIn: React.FC<MoodCheckInProps> = ({ onSave, onCancel, targetDate,
     setStep('writing');
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const isVideo = file.type.startsWith('video/');
-      setMediaType(isVideo ? 'video' : 'image');
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMedia(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const toggleGoal = (id: string) => {
     setActiveGoals(prev => ({ ...prev, [id]: !prev[id] }));
   };
@@ -65,7 +47,10 @@ const MoodCheckIn: React.FC<MoodCheckInProps> = ({ onSave, onCancel, targetDate,
     if (!selectedMood) return;
     setStep('planting');
     const genAffirmation = await getAffirmation(selectedMood, note);
-    setAffirmation(genAffirmation);
+    // Fake a small delay for "growth" feel
+    setTimeout(() => {
+      setAffirmation(genAffirmation);
+    }, 1200);
   };
 
   const handleFinish = () => {
