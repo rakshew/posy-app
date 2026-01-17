@@ -27,8 +27,8 @@ const AFFIRMATION_LIBRARY: Record<MoodType, string[]> = {
     "Every spark of delight is a seed of wonder planted deep in your spirit."
   ],
   [MoodType.LOVED]: [
-    "You are wrapped in the soft ivy of belonging, held firmly by those who care.",
     "Love is the trellis that supports your growth, even when the vines get heavy.",
+    "You are wrapped in the soft ivy of belonging, held firmly by those who care.",
     "You are a cherished blossom in a vast garden, never alone in your blooming."
   ],
   [MoodType.HOPEFUL]: [
