@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Posy: Your Emotional Garden</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            posy: {
+              bg: 'var(--posy-bg)',
+              purple: 'var(--posy-purple)',
+              mint: '#d8e2dc',
+              yellow: '#fde2b2',
+              lavender: '#dcd3ff',
+              salmon: '#ffcad4',
+              ink: 'var(--posy-ink)',
+              paper: 'var(--posy-paper)'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+            serif: ['"Fraunces"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --posy-bg: #f9f8f3;
+      --posy-ink: #2d2a26;
+      --posy-purple: #9b8ade;
+      --posy-paper: #fefdfb;
+      --texture-display: block;
+      --village-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.06), 0 5px 15px -5px rgba(0, 0, 0, 0.03);
+      
+      /* RECESSED EFFECT: Much subtler, creating a soft "pressed" look */
+      --recessed-bg: rgba(45, 42, 38, 0.03);
+      --recessed-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.04), inset -1px -1px 3px rgba(255, 255, 255, 0.7);
+    }
 
+    .dark {
+      --posy-bg: #141210;
+      --posy-ink: #f9f8f3;
+      --posy-purple: #b8a9f5;
+      --posy-paper: #1e1b19;
+      --texture-display: none;
+      --village-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      --recessed-bg: rgba(0, 0, 0, 0.2);
+      --recessed-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.4), inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Accessibility Overrides */
+    .large-text { font-size: 1.15em; }
+    .large-text h1 { font-size: 5rem; }
+    .large-text h2 { font-size: 4rem; }
+    .large-text .text-xl { font-size: 1.5rem; }
+    
+    .high-contrast {
+      --posy-ink: #000000;
+      --posy-purple: #4a3aff;
+    }
+    .high-contrast .posy-card { border: 2px solid #000; }
+    .high-contrast .date-button { border: 2px solid #000; }
+
+    .theme-rose {
+      --posy-bg: #fff5f6;
+      --posy-ink: #4a2c2c;
+      --posy-purple: #e5989b;
+      --posy-paper: #fffafb;
+    }
+
+    .theme-forest {
+      --posy-bg: #f4f7f4;
+      --posy-ink: #1b2e1b;
+      --posy-purple: #8fb9a8;
+      --posy-paper: #fafdfa;
+    }
+
+    body {
+      background-color: var(--posy-bg); 
+      color: var(--posy-ink);
+      overflow-x: hidden;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 300;
+      transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+      opacity: 0.35;
+      z-index: -2;
+      pointer-events: none;
+      display: var(--texture-display);
+    }
+
+    .blob-1 { position: fixed; top: -150px; left: -150px; width: 600px; height: 600px; background: #fde2b2; filter: blur(140px); opacity: 0.1; z-index: -1; border-radius: 50%; }
+    .blob-2 { position: fixed; bottom: -100px; right: -100px; width: 550px; height: 550px; background: #d8e2dc; filter: blur(140px); opacity: 0.1; z-index: -1; border-radius: 50%; }
+    
+    @keyframes sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+    .sway { animation: sway 8s ease-in-out infinite; }
+
+    @keyframes float-up {
+      0% { transform: translateY(15px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .float-up { animation: float-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .posy-card {
+      background-color: var(--posy-paper);
+      box-shadow: var(--village-shadow);
+      border-radius: 40px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .posy-card:hover {
+      box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
+
+    /* RECESSED BUTTON: Square with slightly curved edges */
+    .recessed-button {
+      background-color: var(--recessed-bg);
+      box-shadow: var(--recessed-shadow);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.01);
+    }
+    .recessed-button:hover {
+      filter: brightness(0.98);
+      transform: scale(0.98);
+    }
+
+    .bloom-button {
+      background-color: var(--posy-paper);
+      box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(0, 0, 0, 0.01);
+    }
+    .bloom-button:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-village {
+      border-radius: 9999px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      font-size: 11px;
+      transition: all 0.4s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 25px -8px rgba(0,0,0,0.1);
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+</head>
+<body>
+  <div class="blob-1"></div>
+  <div class="blob-2"></div>
+  <div id="root"></div>
+</body>
+</html>
