@@ -2,8 +2,12 @@
 import { GoogleGenAI } from "@google/genai";
 import { MoodType } from "./types";
 
+/**
+ * Fetches an AI-powered affirmation based on the user's mood and note.
+ * Note: The API_KEY is injected by Vercel at build time via process.env.API_KEY.
+ */
 export async function getAffirmation(mood: MoodType, note: string): Promise<string> {
-  // Use process.env.API_KEY directly as per SDK guidelines
+  // Always initialize right before the call to ensure the latest key is used
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
@@ -26,9 +30,11 @@ export async function getAffirmation(mood: MoodType, note: string): Promise<stri
       },
     });
 
+    // Directly access .text property as per SDK guidelines
     return response.text?.trim() || "The earth remembers your strength even when the frost feels permanent.";
   } catch (error) {
-    console.error("Gemini Error:", error);
+    console.error("Gemini API Error. Check your Vercel Environment Variables:", error);
+    // Fallback poetic message if the API call fails or key is missing
     return "Soft moss gathers where you rest; your growth is quiet, steady, and true.";
   }
 }
