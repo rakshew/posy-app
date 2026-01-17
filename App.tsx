@@ -5,7 +5,7 @@ import Garden from './components/Garden';
 import MoodCheckIn from './components/MoodCheckIn';
 import CalendarView from './components/CalendarView';
 import BouquetExport from './components/BouquetExport';
-import YearOverview from './components/YearOverview';
+import YearOverview from './components/YearOverview'; 
 import FloristView from './components/FloristView';
 import SettingsView from './components/SettingsView';
 import { MOOD_CONFIG } from './constants';
@@ -148,7 +148,9 @@ const App: React.FC = () => {
             <div className="space-y-6 md:space-y-12">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-12">
                 <div className="flex-shrink-0 flex flex-col items-center">
-                  <div className="w-24 h-24 md:w-56 md:h-56 sway mb-2 md:mb-6">{MOOD_CONFIG[selectedDay.mood].icon("w-full h-full")}</div>
+                  <div className="w-24 h-24 md:w-56 md:h-56 sway mb-2 md:mb-6">
+                    {React.createElement(MOOD_CONFIG[selectedDay.mood].Icon, { className: "w-full h-full" })}
+                  </div>
                   <p className="text-[8px] md:text-[10px] font-black text-posy-purple uppercase tracking-[0.4em] mb-1">{MOOD_CONFIG[selectedDay.mood].label}</p>
                   <h3 className="text-lg md:text-3xl font-serif text-posy-ink italic">{MOOD_CONFIG[selectedDay.mood].flower}</h3>
                 </div>
@@ -156,7 +158,7 @@ const App: React.FC = () => {
                   <p className="text-[8px] md:text-[10px] font-black text-posy-ink/40 uppercase tracking-[0.4em]">{new Date(selectedDay.date + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' })}</p>
                   <h3 className="text-xl md:text-5xl font-serif text-posy-ink leading-none">Your Thought</h3>
                   <div className="bg-posy-bg/50 p-4 md:p-8 rounded-[16px] md:rounded-[40px] italic text-base md:text-xl text-posy-ink/90 leading-relaxed border border-posy-purple/5">"{selectedDay.note || 'A quiet space for growth.'}"</div>
-                  {selectedDay.affirmation && <div className="pt-1 md:pt-4 space-y-1 md:space-y-2"><p className="text-[7px] md:text-[9px] uppercase tracking-[0.4em] text-posy-purple font-black">Posy Whisper</p><p className="text-posy-ink font-serif text-lg md:text-2xl italic opacity-90">{selectedDay.affirmation}</p></div>}
+                  {selectedDay.affirmation && <div className="pt-1 md:pt-4 space-y-1 md:space-y-2"><p className="text-[7px] md:text-[9px] uppercase tracking-[0.4em] text-posy-purple font-black">Posy Reflection</p><p className="text-posy-ink font-serif text-lg md:text-2xl italic opacity-90">{selectedDay.affirmation}</p></div>}
                 </div>
               </div>
               {selectedDay.media && <div className="space-y-2 md:space-y-4"><p className="text-[8px] md:text-[10px] font-black text-posy-ink/40 uppercase tracking-[0.4em]">Captured Memory</p><div className="rounded-[16px] md:rounded-[40px] overflow-hidden border-2 md:border-8 border-white shadow-xl bg-posy-bg aspect-video">{selectedDay.mediaType === 'video' ? <video src={selectedDay.media} controls className="w-full h-full object-cover" /> : <img src={selectedDay.media} className="w-full h-full object-cover" />}</div></div>}
