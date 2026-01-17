@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,8 +40,6 @@
       --posy-paper: #fefdfb;
       --texture-display: block;
       --village-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.06), 0 5px 15px -5px rgba(0, 0, 0, 0.03);
-      
-      /* RECESSED EFFECT: Much subtler, creating a soft "pressed" look */
       --recessed-bg: rgba(45, 42, 38, 0.03);
       --recessed-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.04), inset -1px -1px 3px rgba(255, 255, 255, 0.7);
     }
@@ -133,7 +132,6 @@
       transform: translateY(-5px);
     }
 
-    /* RECESSED BUTTON: Square with slightly curved edges */
     .recessed-button {
       background-color: var(--recessed-bg);
       box-shadow: var(--recessed-shadow);
@@ -170,14 +168,20 @@
       justify-content: center;
       box-shadow: 0 12px 25px -8px rgba(0,0,0,0.1);
     }
+
+    /* Clean handling for broken images before they are uploaded */
+    img:not([src]), img[src=""] {
+      visibility: hidden;
+    }
   </style>
 <script type="importmap">
 {
   "imports": {
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react": "https://esm.sh/react@19.0.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3"
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
@@ -186,5 +190,6 @@
   <div class="blob-1"></div>
   <div class="blob-2"></div>
   <div id="root"></div>
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>
